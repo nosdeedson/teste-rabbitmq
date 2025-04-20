@@ -27,16 +27,7 @@ async function bootstrap() {
     }
   })
 
-  app.connectMicroservice<MicroserviceOptions>({
-    transport: Transport.RMQ,
-    options: {
-      urls: ['amqp://rabbitmq:rabbitmq@localhost:5672'],
-      queue: 'emitir',
-      queueOptions: {
-        durable: false,
-      }
-    }
-  })
+  
 
  
   app.startAllMicroservices();
