@@ -2,6 +2,9 @@ import { Module, OnModuleInit } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { EmitirService } from './fila/emitir/emitir.service';
+import { EmitirConsumerService } from './fila/emitir-consumer/emitir-consumer.service';
+import { EmitirConsumerModule } from './fila/emitir-consumer/emitir-consumer.module';
 
 @Module({
   imports: [
@@ -30,11 +33,14 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
           }
         }
       }
-    ])
+    ]),
+    EmitirConsumerModule
   ],
   controllers: [AppController],
   providers: [
     AppService,
+    EmitirService,
+    EmitirConsumerService,
   ],
 })
 export class AppModule {}

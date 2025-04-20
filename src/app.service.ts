@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { ClientProxy, ClientProxyFactory, Transport } from '@nestjs/microservices';
+import { EmitirService } from './fila/emitir/emitir.service';
 
 @Injectable()
 export class AppService {
   private client: ClientProxy;
   private client1: ClientProxy;
-  constructor() { 
+  constructor(
+    private readonly emitir: EmitirService
+  ) { 
     this.client = ClientProxyFactory.create({
       transport: Transport.RMQ,
       options: {
@@ -36,6 +39,11 @@ export class AppService {
   async sendMessage1(message: string) : Promise<string> {
     this.client.emit('message_sent_1', message);
     return 'message sent';
+  }
+
+  async emitindo(message: any) : Promise<string> {
+    this.emitir.sendMessage(message);
+    return 'emitido';
   }
 
   getHello(): string {

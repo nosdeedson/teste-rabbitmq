@@ -25,6 +25,12 @@ export class AppController {
     return { response };
   }
 
+  @Post('emitir')
+  async emitir(@Body() body: any) {
+    const response = await this.appService.emitindo( body );
+    return { response };
+  }
+
   @MessagePattern('message_sent')
   handleMessage(@Payload() data: any) {
     console.log('Received from RabbitMQ:', data);
