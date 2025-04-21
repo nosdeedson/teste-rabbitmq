@@ -3,3 +3,33 @@ curl -X POST http://localhost:3000/with-delay -H "Content-Type: application/json
 curl -X GET http://localhost:3000/send
 curl -X GET http://localhost:3000/send-second
 
+curl -X POST http://localhost:3000/envia-mensagem \
+  -H "Content-Type: application/json" \
+  -d '{
+    "exchange": "beneficiario_consulta_exchange",
+    "routingKey": "beneficiario.update",
+    "mensagem": {
+      "teste": "teste",
+      "message": "Hello RabbitMQ1"
+    },
+    "delay": 5000,
+    "queue": "beneficiario_consulta_queue",
+    "pattern": "beneficiario.update"
+  }'
+
+
+curl -X POST http://localhost:3000/envia-mensagem \
+  -H "Content-Type: application/json" \
+  -d '{
+    "exchange": "boleto_cnab_emitir_exchange",
+    "routingKey": "boleto_cnab.create",
+    "mensagem": {
+      "teste": "boleto_cnab_emitir_exchange",
+      "message": "Hello cnab"
+    },
+    "delay": 5000,
+    "queue": "boleto_cnab_emitir_queue",
+    "pattern": "boleto_cnab.create"
+  }'
+
+

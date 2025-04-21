@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 import { MessagePattern, Payload } from '@nestjs/microservices';
+import { EnviaMensagemDto } from './config/envia-mensagem-dto/envia-mensagem-dto';
 
 @Controller()
 export class AppController {
@@ -40,6 +41,12 @@ export class AppController {
   @Post('payment-queue')
   async paymentQueue(@Body() body: any) {
     const response = await this.appService.sendPaymentQueue( body );
+    return { response };
+  }
+
+  @Post('envia-mensagem')
+  async beneficiarioConsulta(@Body() body: EnviaMensagemDto) {
+    const response = await this.appService.enviaMensagemGenerica( body );
     return { response };
   }
 

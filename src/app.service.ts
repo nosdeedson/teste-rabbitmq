@@ -3,6 +3,8 @@ import { ClientProxy, ClientProxyFactory, Transport } from '@nestjs/microservice
 import { EmitirService } from './fila/emitir/emitir.service';
 import { WithDelayService } from './fila/with-delay/with-delay.service';
 import { PaymentQueueService } from './fila/payment-queue/payment-queue.service';
+import { CriaFilaService } from './fila/cria-fila/cria-fila.service';
+import { EnviaMensagemDto } from './config/envia-mensagem-dto/envia-mensagem-dto';
 
 @Injectable()
 export class AppService {
@@ -12,6 +14,7 @@ export class AppService {
     private readonly emitir: EmitirService,
     private readonly queueDelay: WithDelayService,
     private readonly paymentQueueService: PaymentQueueService,
+    private readonly criarFila: CriaFilaService,
   ) { 
     this.client = ClientProxyFactory.create({
       transport: Transport.RMQ,
@@ -58,6 +61,18 @@ export class AppService {
   async sendPaymentQueue(message: any): Promise<string> {
     this.paymentQueueService.sendPaymentMessage('payment.create', message, 5000);
     return 'emitido com delay';
+  }
+
+  async enviaMensagemGenerica(message: EnviaMensagemDto): Promise<string> {
+    this.criarFila.enviarMensagem(
+      message.exchange,
+      message.routingKey,
+      message.mensagem,
+      message.delay,
+      message.queue,
+      message.pattern,
+    );
+    return 'mensagem criada';
   }
   
 

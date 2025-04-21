@@ -15,17 +15,10 @@ export class PaymentQueueService implements OnModuleInit, OnModuleDestroy {
         this.connection.close();
     }
 
-
     async onModuleInit() {
         this.connection = await amqp.connect('amqp://rabbitmq:rabbitmq@localhost:5672');
         this.channel = await this.connection.createChannel();
         await this.channel.assertExchange(this.exchange, 'x-delayed-message', {
-            durable: true,
-            arguments: {
-                'x-delayed-type': 'direct',
-            }
-        });
-        await this.channel.assertExchange(this.exchange, 'x-delayed-message', { 
             durable: true,
             arguments: {
                 'x-delayed-type': 'direct',
