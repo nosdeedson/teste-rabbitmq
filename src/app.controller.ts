@@ -31,6 +31,18 @@ export class AppController {
     return { response };
   }
 
+  @Post('with-delay')
+  async withDelay(@Body() body: any) {
+    const response = await this.appService.withDelay( body );
+    return { response };
+  }
+
+  @Post('payment-queue')
+  async paymentQueue(@Body() body: any) {
+    const response = await this.appService.sendPaymentQueue( body );
+    return { response };
+  }
+
   @MessagePattern('message_sent')
   handleMessage(@Payload() data: any) {
     console.log('Received from RabbitMQ:', data);

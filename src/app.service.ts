@@ -1,13 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { ClientProxy, ClientProxyFactory, Transport } from '@nestjs/microservices';
 import { EmitirService } from './fila/emitir/emitir.service';
+import { WithDelayService } from './fila/with-delay/with-delay.service';
+import { PaymentQueueService } from './fila/payment-queue/payment-queue.service';
 
 @Injectable()
 export class AppService {
   private client: ClientProxy;
   private client1: ClientProxy;
   constructor(
-    private readonly emitir: EmitirService
+    private readonly emitir: EmitirService,
+    private readonly queueDelay: WithDelayService,
+    private readonly paymentQueueService: PaymentQueueService,
   ) { 
     this.client = ClientProxyFactory.create({
       transport: Transport.RMQ,
@@ -45,6 +49,17 @@ export class AppService {
     this.emitir.sendMessage(message);
     return 'emitido';
   }
+
+  async withDelay(message: any): Promise<string> {
+    this.queueDelay.sendDelayedMessage('task.create', message, 5000);
+    return 'emitido com delay';
+  }
+
+  async sendPaymentQueue(message: any): Promise<string> {
+    this.paymentQueueService.sendPaymentMessage('payment.create', message, 5000);
+    return 'emitido com delay';
+  }
+  
 
   getHello(): string {
     return 'Hello World!';

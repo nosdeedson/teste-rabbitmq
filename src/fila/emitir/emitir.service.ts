@@ -18,7 +18,6 @@ export class EmitirService {
     }
 
     async sendMessage(message: any) : Promise<string> {
-        console.log('emitindo', message);
         this.client.emit('emitindo', message);
         return 'emitido';
     }

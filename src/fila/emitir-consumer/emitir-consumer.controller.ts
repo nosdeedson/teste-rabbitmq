@@ -6,6 +6,7 @@ import { EmitirConsumerService } from './emitir-consumer.service';
 export class EmitirConsumerController {
 
     constructor(private consumerService: EmitirConsumerService) { }
+    
     @MessagePattern('emitindo')
     handleMessage(@Payload() data: any) {
         this.consumerService.handleMessage(data);

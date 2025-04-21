@@ -1,0 +1,5 @@
+curl -X POST http://localhost:3000/payment-queue -H "Content-Type: application/json" -d '{"queue": "payment_queue", "message": "Hello RabbitMQ1"}'
+curl -X POST http://localhost:3000/with-delay -H "Content-Type: application/json" -d '{"queue": "delay_queue", "message": "Hello RabbitMQ1"}'
+curl -X GET http://localhost:3000/send
+curl -X GET http://localhost:3000/send-second
+
